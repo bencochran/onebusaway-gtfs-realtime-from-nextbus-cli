@@ -409,6 +409,7 @@ public class NextBusToGtfsTripMatching {
       if (stopTimes == null) {
         stopTimes = new StopTimes();
         gtfsStopIdToStopTimes.put(stopId, stopTimes);
+        _log.info("found this stop id: "+stopId);
       }
       stopTimes.addStopTime(stopTime, index);
     }
@@ -420,6 +421,7 @@ public class NextBusToGtfsTripMatching {
     Map<FlatStopTime, Integer> mapping = new HashMap<FlatStopTime, Integer>();
 
     for (FlatStopTime nbStopTime : nbStopTimes) {
+      _log.info("This is my stop id: "+nbStopTime.getGtfsStopId());
       StopTimes stopTimes = gtfsStopIdToStopTimes.get(nbStopTime.getGtfsStopId());
       if (stopTimes == null) {
         mapping.put(nbStopTime, -1);
