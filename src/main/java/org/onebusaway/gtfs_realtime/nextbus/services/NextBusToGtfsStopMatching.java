@@ -206,8 +206,9 @@ public class NextBusToGtfsStopMatching {
 
   private void recursivelyBuildAndScoreAssignment(List<Match> matches,
       int depth, Assignment assignment, Min<Assignment> m) {
-    _log.info("done recursivelyBuildAndScoreAssignment depth: " + depth + " out of " + matches.size());
+    _log.info("recursivelyBuildAndScoreAssignment depth: " + depth + " out of " + matches.size());
     if (depth == matches.size()) {
+      _log.info("match");
       double score = scoreAssignment(assignment);
       if (score < m.getMinValue()) {
         m.add(score, new Assignment(assignment));
