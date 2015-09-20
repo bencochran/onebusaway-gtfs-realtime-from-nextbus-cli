@@ -123,6 +123,7 @@ public class NextBusToGtfsStopMatching {
       }
 
       for (NBDirection direction : nbRoute.getDirections()) {
+        _log.info("getting matches for " + nbRoute.getTitle() + " " + direction.getTitle());
 
         List<Match> matches = new ArrayList<Match>();
         for (NBStop fromStop : direction.getStops()) {
@@ -133,12 +134,15 @@ public class NextBusToGtfsStopMatching {
           Match m = new Match(fromStop, toStops);
           matches.add(m);
         }
+        _log.info("done with direct matches");
 
         Min<Assignment> m = new Min<Assignment>();
         Assignment assignment = new Assignment(direction.getStops(),
             stopSequenceIndices);
         matches = applyDirectMatchesToAssignment(matches, assignment);
+        _log.info("done applyDirectMatchesToAssignment");
         recursivelyBuildAndScoreAssignment(matches, 0, assignment, m);
+        _log.info("done recursivelyBuildAndScoreAssignment");
         Assignment bestAssignment = m.getMinElement();
 
         if (bestAssignment == null) {
