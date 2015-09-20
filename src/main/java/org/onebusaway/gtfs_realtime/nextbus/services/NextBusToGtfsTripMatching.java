@@ -81,11 +81,11 @@ public class NextBusToGtfsTripMatching {
       Map<NBRoute, Route> routeMatches,
       Map<RouteDirectionStopKey, String> stopIdMappings, GtfsRelationalDao dao) {
 
-        for(Map.Entry<RouteDirectionStopKey, String> entry : stopIdMappings.entrySet()) {
-          RouteDirectionStopKey k = entry.getKey();
-          String v = entry.getValue();
-          _log.info("*** "+k+" : " +v);
-        }
+        // for(Map.Entry<RouteDirectionStopKey, String> entry : stopIdMappings.entrySet()) {
+        //   RouteDirectionStopKey k = entry.getKey();
+        //   String v = entry.getValue();
+        //   // _log.info("*** "+k+" : " +v);
+        // }
 
     Map<ServiceDateBlockKey, StopTimeIndices> mappings = new HashMap<ServiceDateBlockKey, StopTimeIndices>();
 
@@ -96,8 +96,13 @@ public class NextBusToGtfsTripMatching {
       NBRoute nbRoute = entry.getKey();
       Route gtfsRoute = entry.getValue();
       
+      // for (NBDirection dir : nbRoute.getDirections()) {
+      //   _log.info("%%% " + dir.getTag() + " : " + dir.getName() + " : " + dir.getTitle());
+      // }
+      
+      Map<String, String> directionNamesByDirectionTag = new HashMap<String, String>();
       for (NBDirection dir : nbRoute.getDirections()) {
-        _log.info("%%% " + dir.getTag() + " : " + dir.getName() + " : " + dir.getTitle());
+          directionNamesByDirectionTag.put(dir.getTag(), dir.getName());
       }
       
       List<NBRoute> schedules = getSchedulesForRoute(nbRoute);
@@ -106,7 +111,7 @@ public class NextBusToGtfsTripMatching {
       Map<String, List<List<StopTime>>> tripStopTimesByServiceClass = computeTripStopTimesByServiceClass(
           dao, gtfsRoute, serviceIdsByServiceClass);
 
-      List<FlatStopTime> stopTimes = flattenSchedules(schedules, stopIdMappings);
+      List<FlatStopTime> stopTimes = flattenSchedules(schedules, stopIdMappings, directionNamesByDirectionTag);
       Map<String, List<FlatStopTime>> stopTimesByScheduleClass = MappingLibrary.mapToValueList(
           stopTimes, "scheduleClass");
 
@@ -199,25 +204,25 @@ public class NextBusToGtfsTripMatching {
     }
 
     if (m.getMinValue() > 2 * 60) {
-      // StringBuilder b = new StringBuilder();
-      // for (FlatStopTime stopTime : nextBusTrip) {
-      //   b.append("\n  ");
-      //   b.append(stopTime.getRouteTag());
-      //   b.append(" ");
-      //   b.append(stopTime.getScheduleClass());
-      //   b.append(" ");
-      //   b.append(stopTime.getServiceClass());
-      //   b.append(" ");
-      //   b.append(stopTime.getDirectionTag());
-      //   b.append(" ");
-      //   b.append(stopTime.getBlockTag());
-      //   b.append(" ");
-      //   b.append(stopTime.getStopTag());
-      //   b.append(" ");
-      //   b.append(stopTime.getEpochTimeAsString());
-      //
-      // }
-      // _log.warn("no good match found for trip: ("+m.getMinValue()+")" + b.toString());
+      StringBuilder b = new StringBuilder();
+      for (FlatStopTime stopTime : nextBusTrip) {
+        b.append("\n  ");
+        b.append(stopTime.getRouteTag());
+        b.append(" ");
+        b.append(stopTime.getScheduleClass());
+        b.append(" ");
+        b.append(stopTime.getServiceClass());
+        b.append(" ");
+        b.append(stopTime.getDirectionTag());
+        b.append(" ");
+        b.append(stopTime.getBlockTag());
+        b.append(" ");
+        b.append(stopTime.getStopTag());
+        b.append(" ");
+        b.append(stopTime.getEpochTimeAsString());
+
+      }
+      _log.warn("no good match found for trip: ("+m.getMinValue()+")" + b.toString());
     } else {
       List<StopTime> bestStopTimes = m.getMinElement();
       bestStopTimesForBlock.addAll(bestStopTimes);
@@ -239,7 +244,7 @@ public class NextBusToGtfsTripMatching {
         b.append(stopTime.getEpochTimeAsString());
 
       }
-      _log.warn("good match found for trip: ("+m.getMinValue()+")" + b.toString());
+      _log.warn("definite good match found for trip: ("+m.getMinValue()+")" + b.toString());
 
     }
     return m.getMinValue();
@@ -254,7 +259,8 @@ public class NextBusToGtfsTripMatching {
   }
 
   private List<FlatStopTime> flattenSchedules(List<NBRoute> schedules,
-      Map<RouteDirectionStopKey, String> stopIdMappings) {
+      Map<RouteDirectionStopKey, String> stopIdMappings,
+      Map<String, String> directionNamesByDirectionTag) {
     List<FlatStopTime> flattened = new ArrayList<FlatStopTime>();
     for (NBRoute schedule : schedules) {
       List<NBTrip> trips = schedule.getTrips();
@@ -280,7 +286,7 @@ public class NextBusToGtfsTripMatching {
 
           RouteDirectionStopKey key = new RouteDirectionStopKey(
               flat.getRouteTag(), flat.getDirectionTag(), flat.getStopTag());
-          _log.info("### "+ key);
+          // _log.info("### "+ key);
           String gtfsStopId = stopIdMappings.get(key);
           flat.setGtfsStopId(gtfsStopId);
 
@@ -422,7 +428,7 @@ public class NextBusToGtfsTripMatching {
       if (stopTimes == null) {
         stopTimes = new StopTimes();
         gtfsStopIdToStopTimes.put(stopId, stopTimes);
-        _log.info("found this stop id: "+stopId);
+        // _log.info("found this stop id: "+stopId);
       }
       stopTimes.addStopTime(stopTime, index);
     }
@@ -434,7 +440,7 @@ public class NextBusToGtfsTripMatching {
     Map<FlatStopTime, Integer> mapping = new HashMap<FlatStopTime, Integer>();
 
     for (FlatStopTime nbStopTime : nbStopTimes) {
-      _log.info("This is my stop id: "+nbStopTime.getGtfsStopId());
+      // _log.info("This is my stop id: "+nbStopTime.getGtfsStopId());
       StopTimes stopTimes = gtfsStopIdToStopTimes.get(nbStopTime.getGtfsStopId());
       if (stopTimes == null) {
         mapping.put(nbStopTime, -1);
@@ -448,21 +454,21 @@ public class NextBusToGtfsTripMatching {
     int score = 0;
     boolean allMisses = true;
 
-    _log.info("got this many: "+mapping.entrySet().size());
-    _log.info("got this many gtfs: "+gtfsStopTimes.size());
-    _log.info("got this many nb: "+nbStopTimes.size());
+    // _log.info("got this many: "+mapping.entrySet().size());
+    // _log.info("got this many gtfs: "+gtfsStopTimes.size());
+    // _log.info("got this many nb: "+nbStopTimes.size());
 
     for (Map.Entry<FlatStopTime, Integer> entry : mapping.entrySet()) {
       FlatStopTime nbStopTime = entry.getKey();
       int index = entry.getValue();
-      _log.info("this index: "+index);
+      // _log.info("this index: "+index);
       StopTime gtfsStopTime = null;
       if (0 <= index && index < gtfsStopTimes.size()) {
         gtfsStopTime = gtfsStopTimes.get(index);
       }
       
       if (gtfsStopTime == null) {
-        _log.info("miss");
+        // _log.info("miss");
         score += 15; // A miss is a 15 minute penalty
       } else {
         allMisses = false;
