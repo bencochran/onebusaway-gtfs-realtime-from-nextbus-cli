@@ -434,6 +434,7 @@ public class NextBusToGtfsTripMatching {
     boolean allMisses = true;
 
     _log.info("got this many: "+mapping.entrySet().size());
+    _log.info("got this many gtfs: "+gtfsStopTimes.size().size());
 
     for (Map.Entry<FlatStopTime, Integer> entry : mapping.entrySet()) {
       FlatStopTime nbStopTime = entry.getKey();
@@ -442,8 +443,9 @@ public class NextBusToGtfsTripMatching {
       if (0 <= index && index < gtfsStopTimes.size()) {
         gtfsStopTime = gtfsStopTimes.get(index);
       }
-
+      
       if (gtfsStopTime == null) {
+        _log.info("miss");
         score += 15; // A miss is a 15 minute penalty
       } else {
         allMisses = false;
