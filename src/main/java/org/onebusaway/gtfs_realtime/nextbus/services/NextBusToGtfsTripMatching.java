@@ -94,6 +94,11 @@ public class NextBusToGtfsTripMatching {
     for (Map.Entry<NBRoute, Route> entry : routeMatches.entrySet()) {
       NBRoute nbRoute = entry.getKey();
       Route gtfsRoute = entry.getValue();
+      
+      for (NBDirection dir : nbRoute.getDirections()) {
+        _log.info("%%% " + dir.geTag() + " : " + dir.getName() );
+      }
+      
       List<NBRoute> schedules = getSchedulesForRoute(nbRoute);
       Map<String, List<AgencyAndId>> serviceIdsByServiceClass = getApplicableServiceIdsForByServiceClass(
           dao, gtfsRoute, schedules);
