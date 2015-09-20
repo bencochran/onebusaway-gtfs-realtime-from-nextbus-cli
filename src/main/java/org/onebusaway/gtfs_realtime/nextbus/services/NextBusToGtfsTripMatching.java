@@ -81,8 +81,9 @@ public class NextBusToGtfsTripMatching {
       Map<RouteDirectionStopKey, String> stopIdMappings, GtfsRelationalDao dao) {
 
         for(Map.Entry<RouteDirectionStopKey, Sring> entry : stopIdMappings.entrySet()) {
-          
-          _log.info("*** "+entry.getKey().toString()+" : " +entry.getValue());
+          RouteDirectionStopKey k = entry.getKey();
+          String v = entry.getValue();
+          _log.info("*** "+k+" : " +v);
         }
 
     Map<ServiceDateBlockKey, StopTimeIndices> mappings = new HashMap<ServiceDateBlockKey, StopTimeIndices>();
