@@ -17,6 +17,7 @@ package org.onebusaway.gtfs_realtime.nextbus.services;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
