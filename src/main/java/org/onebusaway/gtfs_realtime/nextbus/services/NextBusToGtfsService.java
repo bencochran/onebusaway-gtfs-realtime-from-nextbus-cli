@@ -205,7 +205,7 @@ public class NextBusToGtfsService {
         necessaryClasses.add(Trip.class);
         necessaryClasses.add(StopTime.class);
         necessaryClasses.add(ServiceCalendar.class);
-        necessaryClasses.add(ServiceCalendarDate.class);
+        // necessaryClasses.add(ServiceCalendarDate.class);
       //   _entityClasses.add(FareAttribute.class);
       //   _entityClasses.add(FareRule.class);
       //   _entityClasses.add(Frequency.class);
