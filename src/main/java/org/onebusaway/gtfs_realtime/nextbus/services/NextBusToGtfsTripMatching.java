@@ -80,6 +80,11 @@ public class NextBusToGtfsTripMatching {
       Map<NBRoute, Route> routeMatches,
       Map<RouteDirectionStopKey, String> stopIdMappings, GtfsRelationalDao dao) {
 
+        for(Map.Entry<RouteDirectionStopKey, Sring> entry : stopIdMappings) {
+          
+          _log.info("*** "+entry.getKey().toString()+" : " +entry.getValue());
+        }
+
     Map<ServiceDateBlockKey, StopTimeIndices> mappings = new HashMap<ServiceDateBlockKey, StopTimeIndices>();
 
     CalendarServiceDataFactory factory = new CalendarServiceDataFactoryImpl(dao);
