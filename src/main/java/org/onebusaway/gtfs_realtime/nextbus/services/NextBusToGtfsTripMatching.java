@@ -63,9 +63,10 @@ public class NextBusToGtfsTripMatching {
 
   static {
     _serviceClassToDaymask.put("mtwth", "1111000");
-    _serviceClassToDaymask.put("f", "0000100");
-    _serviceClassToDaymask.put("sat", "0000010");
-    _serviceClassToDaymask.put("sun", "0000001");
+    _serviceClassToDaymask.put("f",     "0000100");
+    _serviceClassToDaymask.put("sat",   "0000010");
+    _serviceClassToDaymask.put("sun",   "0000001");
+    _serviceClassToDaymask.put("wkd",   "0000011")
   }
 
   private NextBusApiService _nextBusApiServie;
