@@ -433,6 +433,8 @@ public class NextBusToGtfsTripMatching {
     int score = 0;
     boolean allMisses = true;
 
+    _log.info("got this many: "+mapping.entrySet().size());
+
     for (Map.Entry<FlatStopTime, Integer> entry : mapping.entrySet()) {
       FlatStopTime nbStopTime = entry.getKey();
       int index = entry.getValue();
@@ -454,6 +456,9 @@ public class NextBusToGtfsTripMatching {
         lastIndex = index;
       }
     }
+    
+    _log.info("got this many: "+mapping.entrySet().count());
+    
 
     if (allMisses)
       return 4 * 60 * 60;
