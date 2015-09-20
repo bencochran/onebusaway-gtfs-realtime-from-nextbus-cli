@@ -47,6 +47,7 @@ import org.onebusaway.gtfs_realtime.nextbus.model.RouteDirectionStopKey;
 import org.onebusaway.gtfs_realtime.nextbus.model.ServiceDateBlockKey;
 import org.onebusaway.gtfs_realtime.nextbus.model.StopTimeIndices;
 import org.onebusaway.gtfs_realtime.nextbus.model.api.NBRoute;
+import org.onebusaway.gtfs_realtime.nextbus.model.api.NBDirection;
 import org.onebusaway.gtfs_realtime.nextbus.model.api.NBStopTime;
 import org.onebusaway.gtfs_realtime.nextbus.model.api.NBTrip;
 import org.slf4j.Logger;
@@ -96,7 +97,7 @@ public class NextBusToGtfsTripMatching {
       Route gtfsRoute = entry.getValue();
       
       for (NBDirection dir : nbRoute.getDirections()) {
-        // _log.info("%%% " + dir.getTag() + " : " + dir.getName() + " : " + dir.getTitle());
+        _log.info("%%% " + dir.getTag() + " : " + dir.getName() + " : " + dir.getTitle());
       }
       
       List<NBRoute> schedules = getSchedulesForRoute(nbRoute);
