@@ -274,6 +274,7 @@ public class NextBusToGtfsTripMatching {
 
           RouteDirectionStopKey key = new RouteDirectionStopKey(
               flat.getRouteTag(), flat.getDirectionTag(), flat.getStopTag());
+          _log.info("### "+ key);
           String gtfsStopId = stopIdMappings.get(key);
           flat.setGtfsStopId(gtfsStopId);
 
