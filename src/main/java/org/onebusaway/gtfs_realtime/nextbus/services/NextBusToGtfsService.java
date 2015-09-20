@@ -36,9 +36,13 @@ import org.onebusaway.collections.MappingLibrary;
 import org.onebusaway.collections.Min;
 import org.onebusaway.gtfs.impl.GtfsRelationalDaoImpl;
 import org.onebusaway.gtfs.model.Agency;
+import org.onebusaway.gtfs.model.FeedInfo;
 import org.onebusaway.gtfs.model.Route;
+import org.onebusaway.gtfs.model.ServiceCalendar;
+import org.onebusaway.gtfs.model.ServiceCalendarDate;
 import org.onebusaway.gtfs.model.Stop;
 import org.onebusaway.gtfs.model.StopTime;
+import org.onebusaway.gtfs.model.Trip;
 import org.onebusaway.gtfs.model.calendar.ServiceDate;
 import org.onebusaway.gtfs.serialization.GtfsReader;
 import org.onebusaway.gtfs.serialization.mappings.StopTimeFieldMappingFactory;
@@ -190,6 +194,26 @@ public class NextBusToGtfsService {
       GtfsRelationalDaoImpl dao = new GtfsRelationalDaoImpl();
 
       GtfsReader reader = new GtfsReader();
+      // reader.
+       List<Class<?>> necessaryClasses = new ArrayList<Class<?>>();
+      // setEntityClasses
+        necessaryClasses.add(Agency.class);
+      //   _entityClasses.add(ShapePoint.class);
+        necessaryClasses.add(Route.class);
+        necessaryClasses.add(Stop.class);
+        necessaryClasses.add(Trip.class);
+        necessaryClasses.add(StopTime.class);
+        necessaryClasses.add(ServiceCalendar.class);
+        necessaryClasses.add(ServiceCalendarDate.class);
+      //   _entityClasses.add(FareAttribute.class);
+      //   _entityClasses.add(FareRule.class);
+      //   _entityClasses.add(Frequency.class);
+      //   _entityClasses.add(Pathway.class);
+      //   _entityClasses.add(Transfer.class);
+        necessaryClasses.add(FeedInfo.class);
+        reader.setEntityClasses(necessaryClasses);
+      
+      
       reader.setInputLocation(_gtfsPath);
       reader.setEntityStore(dao);
       reader.run();
