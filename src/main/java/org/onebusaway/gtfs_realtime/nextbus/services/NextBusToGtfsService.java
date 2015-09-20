@@ -211,7 +211,7 @@ public class NextBusToGtfsService {
       //   _entityClasses.add(Frequency.class);
       //   _entityClasses.add(Pathway.class);
       //   _entityClasses.add(Transfer.class);
-        necessaryClasses.add(FeedInfo.class);
+        // necessaryClasses.add(FeedInfo.class);
         reader.setEntityClasses(necessaryClasses);
       
       
