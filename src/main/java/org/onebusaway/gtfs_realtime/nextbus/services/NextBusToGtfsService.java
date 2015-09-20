@@ -40,6 +40,7 @@ import org.onebusaway.gtfs.model.Stop;
 import org.onebusaway.gtfs.model.StopTime;
 import org.onebusaway.gtfs.model.calendar.ServiceDate;
 import org.onebusaway.gtfs.serialization.GtfsReader;
+// import org.onebusaway.gtfs.serialization.mappings.StopTimeFieldMappingFactory;
 import org.onebusaway.gtfs.services.GtfsRelationalDao;
 import org.onebusaway.gtfs_realtime.nextbus.model.FlatPrediction;
 import org.onebusaway.gtfs_realtime.nextbus.model.RouteDirectionStopKey;
@@ -219,6 +220,14 @@ public class NextBusToGtfsService {
     return status;
   }
 
+  private static final int positiveMod(int value, int modulo) {
+    int m = value % modulo;
+    if (m < 0) {
+      m += modulo;
+    }
+    return m;
+  }
+
   public void applyStopTimeIndicesToPredictions(
       List<FlatPrediction> predictions, VehicleStatus status,
       StopTimeIndices stopTimeIndices) {
@@ -228,6 +237,28 @@ public class NextBusToGtfsService {
       if (index == null) {
         continue;
       }
+
+      List<StopTime> allStopTimes = stopTimeIndices.getStopTimes();
+      StopTime firstStopTime = allStopTimes.get(0);
+      int arrivalTime = firstStopTime.getArrivalTime();
+      int seconds = positiveMod(t, 60);
+      int hourAndMinutes = (t - seconds) / 60;
+      int minutes = positiveMod(hourAndMinutes, 60);
+      int hours = (hourAndMinutes - minutes) / 60;
+
+      DecimalFormat format = new DecimalFormat("00");
+      StringBuilder b = new StringBuilder();
+      b.append(format.format(hours));
+      b.append(":");
+      b.append(format.format(minutes));
+      b.append(":");
+      b.append(format.format(seconds));
+      String firstStopTimeString = b.toString();
+
+      // String firstStopTimeString = StopTimeFieldMappingFactory.getSecondsAsString(firstStopTime.getArrivalTime());
+      prediction.setStartTime(firstStopTimeString);
+
+
       int effectiveTime = (int) ((prediction.getEpochTime() - status.getServiceDateValue()) / 1000);
       int[] stopTimeArray = index.getStopTimes();
       int i = Arrays.binarySearch(stopTimeArray, effectiveTime);

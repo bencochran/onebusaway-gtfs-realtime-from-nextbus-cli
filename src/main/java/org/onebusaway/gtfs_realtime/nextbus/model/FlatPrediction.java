@@ -30,6 +30,8 @@ public class FlatPrediction implements Comparable<FlatPrediction> {
 
   private String tripTag;
 
+  private String startTime;
+
   public String getRouteTag() {
     return routeTag;
   }
@@ -84,6 +86,14 @@ public class FlatPrediction implements Comparable<FlatPrediction> {
 
   public void setTripTag(String tripTag) {
     this.tripTag = tripTag;
+  }
+
+  public String getStartTime() {
+    return startTime;
+  }
+
+  public void getStartTime(String startTime) {
+    this.startTime = startTime;
   }
 
   @Override

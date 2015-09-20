@@ -237,6 +237,9 @@ public class NextBusToGtfsRealtimeService {
       if (id.getTripId() != null) {
         tripDescriptor.setTripId(id.getTripId());
       }
+      if (first.getStartTime() != null) {
+        tripDescriptor.setStartTime(first.getStartTime());
+      }
       tripUpdate.setTrip(tripDescriptor);
       VehicleDescriptor.Builder vehicle = VehicleDescriptor.newBuilder();
       vehicle.setId(id.getVehicleId());
