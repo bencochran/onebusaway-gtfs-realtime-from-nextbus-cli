@@ -434,8 +434,8 @@ public class NextBusToGtfsTripMatching {
     boolean allMisses = true;
 
     _log.info("got this many: "+mapping.entrySet().size());
-    _log.info("got this many gtfs: "+gtfsStopTimes.count());
-    _log.info("got this many nb: "+nbStopTimes.count());
+    _log.info("got this many gtfs: "+gtfsStopTimes.size());
+    _log.info("got this many nb: "+nbStopTimes.size());
 
     for (Map.Entry<FlatStopTime, Integer> entry : mapping.entrySet()) {
       FlatStopTime nbStopTime = entry.getKey();
