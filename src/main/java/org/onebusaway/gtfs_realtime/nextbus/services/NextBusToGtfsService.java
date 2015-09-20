@@ -55,6 +55,8 @@ import org.onebusaway.gtfs_realtime.nextbus.model.StopTimeIndex;
 import org.onebusaway.gtfs_realtime.nextbus.model.StopTimeIndices;
 import org.onebusaway.gtfs_realtime.nextbus.model.api.NBRoute;
 import org.onebusaway.gtfs_realtime.nextbus.model.api.NBStop;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Attempt to match NextBus route, stop, and block tags to GTFS route, stop, and
@@ -65,6 +67,8 @@ import org.onebusaway.gtfs_realtime.nextbus.model.api.NBStop;
 @Singleton
 public class NextBusToGtfsService {
 
+  private final Logger _log = LoggerFactory.getLogger(GtfsReader.class);
+  
   private NextBusToGtfsStopMatching _stopMatching;
 
   private NextBusToGtfsRouteMatching _routeMatching;
@@ -121,8 +125,10 @@ public class NextBusToGtfsService {
     Map<NBStop, List<Stop>> potentialStopMatches = _stopMatching.getPotentialStopMatches(
         routes, dao.getAllStops());
 
+    _log.info("finding route matches");
     Map<NBRoute, Route> routeMatches = _routeMatching.getRouteMatches(routes,
         dao, potentialStopMatches);
+    _log.info("done finding route matches");
 
     _routeIdMappings.clear();
     for (Map.Entry<NBRoute, Route> entry : routeMatches.entrySet()) {
@@ -142,6 +148,7 @@ public class NextBusToGtfsService {
       _stopTimeMappings.clear();
       _stopTimeMappings.putAll(mapping);
     }
+    _log.info("done matching to gtfs");
   }
 
   public void mapToGtfsIfApplicable(List<FlatPrediction> predictions) {
@@ -218,6 +225,7 @@ public class NextBusToGtfsService {
       reader.setInputLocation(_gtfsPath);
       reader.setEntityStore(dao);
       reader.run();
+      _log.info("done reading gtfs");
 
       return dao;
 

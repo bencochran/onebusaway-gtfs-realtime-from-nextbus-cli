@@ -62,12 +62,15 @@ public class NextBusToGtfsStopMatching {
 
     Map<String, NBStop> nbStopsByTag = getStopsByTag(nbRoutes);
 
+    _log.info("building tree");
     STRtree tree = new STRtree(gtfsStops.size());
     for (Stop stop : gtfsStops) {
       tree.insert(new Envelope(new Coordinate(stop.getLon(), stop.getLat())),
           stop);
     }
     tree.build();
+    _log.info("done building tree");
+    _log.info("finding potential matches");
 
     Map<NBStop, List<Stop>> potentialMatches = new HashMap<NBStop, List<Stop>>();
     int stopsWithNoMatches = 0;
@@ -84,6 +87,7 @@ public class NextBusToGtfsStopMatching {
       }
       potentialMatches.put(nbStop, stopsInEnvelope);
     }
+    _log.info("done finding potential matches");
 
     if (stopsWithNoMatches > 0) {
       _log.warn("stops without matches: " + stopsWithNoMatches + "/"
@@ -99,11 +103,14 @@ public class NextBusToGtfsStopMatching {
 
     Map<RouteDirectionStopKey, String> stopIdMappings = new HashMap<RouteDirectionStopKey, String>();
 
+    _log.info("getting stop matches");
     for (Map.Entry<NBRoute, Route> entry : routeMatches.entrySet()) {
 
       NBRoute nbRoute = entry.getKey();
       Route gtfsRoute = entry.getValue();
 
+      _log.info("getting matches for " + nbRoute.getTitle());
+      
       Set<List<Stop>> stopSequences = getStopSequencesForRoute(dao, gtfsRoute);
 
       List<Map<Stop, Integer>> stopSequenceIndices = new ArrayList<Map<Stop, Integer>>();
@@ -150,6 +157,7 @@ public class NextBusToGtfsStopMatching {
         }
       }
     }
+    _log.info("done getting stop matches");
     return stopIdMappings;
   }
 

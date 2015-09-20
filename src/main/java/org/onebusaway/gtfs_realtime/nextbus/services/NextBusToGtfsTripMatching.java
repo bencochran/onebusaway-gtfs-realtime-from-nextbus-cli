@@ -81,12 +81,15 @@ public class NextBusToGtfsTripMatching {
 
     Map<ServiceDateBlockKey, StopTimeIndices> mappings = new HashMap<ServiceDateBlockKey, StopTimeIndices>();
 
+    _log.info("getting trip matches");
+    
     CalendarServiceDataFactory factory = new CalendarServiceDataFactoryImpl(dao);
     CalendarServiceData data = factory.createData();
 
     for (Map.Entry<NBRoute, Route> entry : routeMatches.entrySet()) {
       NBRoute nbRoute = entry.getKey();
       Route gtfsRoute = entry.getValue();
+      _log.info("getting trip matches for: " + nbRoute.getTitle());
       List<NBRoute> schedules = getSchedulesForRoute(nbRoute);
       Map<String, List<AgencyAndId>> serviceIdsByServiceClass = getApplicableServiceIdsForByServiceClass(
           dao, gtfsRoute, schedules);
@@ -133,6 +136,7 @@ public class NextBusToGtfsTripMatching {
         }
       }
     }
+    _log.info("done getting trip matches");
 
     return mappings;
   }
