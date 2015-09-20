@@ -80,7 +80,7 @@ public class NextBusToGtfsTripMatching {
       Map<NBRoute, Route> routeMatches,
       Map<RouteDirectionStopKey, String> stopIdMappings, GtfsRelationalDao dao) {
 
-        for(Map.Entry<RouteDirectionStopKey, Sring> entry : stopIdMappings) {
+        for(Map.Entry<RouteDirectionStopKey, Sring> entry : stopIdMappings.entrySet()) {
           
           _log.info("*** "+entry.getKey().toString()+" : " +entry.getValue());
         }
