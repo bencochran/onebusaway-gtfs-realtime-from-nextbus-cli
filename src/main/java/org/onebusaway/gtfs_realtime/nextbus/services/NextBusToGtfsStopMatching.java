@@ -213,7 +213,7 @@ public class NextBusToGtfsStopMatching {
       if (score < m.getMinValue()) {
         m.add(score, new Assignment(assignment));
       }
-
+      return;
     } else {
       Match match = matches.get(depth);
       for (int i = 0; i < match.to.size(); ++i) {
