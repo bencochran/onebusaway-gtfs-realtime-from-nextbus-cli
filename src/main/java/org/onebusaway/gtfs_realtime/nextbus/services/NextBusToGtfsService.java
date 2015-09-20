@@ -125,10 +125,8 @@ public class NextBusToGtfsService {
     Map<NBStop, List<Stop>> potentialStopMatches = _stopMatching.getPotentialStopMatches(
         routes, dao.getAllStops());
 
-    _log.info("finding route matches");
     Map<NBRoute, Route> routeMatches = _routeMatching.getRouteMatches(routes,
         dao, potentialStopMatches);
-    _log.info("done finding route matches");
 
     _routeIdMappings.clear();
     for (Map.Entry<NBRoute, Route> entry : routeMatches.entrySet()) {
@@ -148,7 +146,6 @@ public class NextBusToGtfsService {
       _stopTimeMappings.clear();
       _stopTimeMappings.putAll(mapping);
     }
-    _log.info("done matching to gtfs");
   }
 
   public void mapToGtfsIfApplicable(List<FlatPrediction> predictions) {
@@ -225,7 +222,6 @@ public class NextBusToGtfsService {
       reader.setInputLocation(_gtfsPath);
       reader.setEntityStore(dao);
       reader.run();
-      _log.info("done reading gtfs");
 
       return dao;
 

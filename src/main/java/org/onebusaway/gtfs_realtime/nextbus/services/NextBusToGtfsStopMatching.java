@@ -62,15 +62,12 @@ public class NextBusToGtfsStopMatching {
 
     Map<String, NBStop> nbStopsByTag = getStopsByTag(nbRoutes);
 
-    _log.info("building tree");
     STRtree tree = new STRtree(gtfsStops.size());
     for (Stop stop : gtfsStops) {
       tree.insert(new Envelope(new Coordinate(stop.getLon(), stop.getLat())),
           stop);
     }
     tree.build();
-    _log.info("done building tree");
-    _log.info("finding potential matches");
 
     Map<NBStop, List<Stop>> potentialMatches = new HashMap<NBStop, List<Stop>>();
     int stopsWithNoMatches = 0;
@@ -87,7 +84,6 @@ public class NextBusToGtfsStopMatching {
       }
       potentialMatches.put(nbStop, stopsInEnvelope);
     }
-    _log.info("done finding potential matches");
 
     if (stopsWithNoMatches > 0) {
       _log.warn("stops without matches: " + stopsWithNoMatches + "/"
@@ -103,14 +99,11 @@ public class NextBusToGtfsStopMatching {
 
     Map<RouteDirectionStopKey, String> stopIdMappings = new HashMap<RouteDirectionStopKey, String>();
 
-    _log.info("getting stop matches");
     for (Map.Entry<NBRoute, Route> entry : routeMatches.entrySet()) {
 
       NBRoute nbRoute = entry.getKey();
       Route gtfsRoute = entry.getValue();
 
-      _log.info("getting matches for " + nbRoute.getTitle());
-      
       Set<List<Stop>> stopSequences = getStopSequencesForRoute(dao, gtfsRoute);
 
       List<Map<Stop, Integer>> stopSequenceIndices = new ArrayList<Map<Stop, Integer>>();
@@ -123,7 +116,6 @@ public class NextBusToGtfsStopMatching {
       }
 
       for (NBDirection direction : nbRoute.getDirections()) {
-        _log.info("getting matches for " + nbRoute.getTitle() + " " + direction.getTitle());
 
         List<Match> matches = new ArrayList<Match>();
         for (NBStop fromStop : direction.getStops()) {
@@ -134,15 +126,12 @@ public class NextBusToGtfsStopMatching {
           Match m = new Match(fromStop, toStops);
           matches.add(m);
         }
-        _log.info("done with direct matches");
 
         Min<Assignment> m = new Min<Assignment>();
         Assignment assignment = new Assignment(direction.getStops(),
             stopSequenceIndices);
         matches = applyDirectMatchesToAssignment(matches, assignment);
-        _log.info("done applyDirectMatchesToAssignment");
         recursivelyBuildAndScoreAssignment(matches, 0, assignment, m);
-        _log.info("done recursivelyBuildAndScoreAssignment");
         Assignment bestAssignment = m.getMinElement();
 
         if (bestAssignment == null) {
@@ -161,7 +150,6 @@ public class NextBusToGtfsStopMatching {
         }
       }
     }
-    _log.info("done getting stop matches");
     return stopIdMappings;
   }
 
@@ -206,9 +194,7 @@ public class NextBusToGtfsStopMatching {
 
   private void recursivelyBuildAndScoreAssignment(List<Match> matches,
       int depth, Assignment assignment, Min<Assignment> m) {
-    _log.info("recursivelyBuildAndScoreAssignment depth: " + depth + " out of " + matches.size());
     if (depth == matches.size()) {
-      _log.info("match");
       double score = scoreAssignment(assignment);
       if (score < m.getMinValue()) {
         m.add(score, new Assignment(assignment));
