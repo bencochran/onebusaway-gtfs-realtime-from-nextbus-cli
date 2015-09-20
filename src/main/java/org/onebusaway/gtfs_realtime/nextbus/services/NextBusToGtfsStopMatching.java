@@ -218,8 +218,8 @@ public class NextBusToGtfsStopMatching {
       Match match = matches.get(depth);
       for (int i = 0; i < match.to.size(); ++i) {
         assignment.applyMatch(match, i);
-        recursivelyBuildAndScoreAssignment(matches, depth + 1, assignment, m);
       }
+      recursivelyBuildAndScoreAssignment(matches, depth + 1, assignment, m);
     }
   }
 
