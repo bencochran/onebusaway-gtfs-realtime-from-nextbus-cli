@@ -205,7 +205,7 @@ public class NextBusToGtfsTripMatching {
         b.append(stopTime.getEpochTimeAsString());
 
       }
-      _log.warn("no good match found for trip:" + b.toString());
+      _log.warn("no good match found for trip: ("+m.getMinValue()+")" + b.toString());
     } else {
       List<StopTime> bestStopTimes = m.getMinElement();
       bestStopTimesForBlock.addAll(bestStopTimes);
