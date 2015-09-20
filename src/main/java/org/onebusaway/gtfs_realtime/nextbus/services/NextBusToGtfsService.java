@@ -65,6 +65,8 @@ public class NextBusToGtfsService {
 
   private NextBusToGtfsTripMatching _tripMatching;
 
+  // private ConcurrentMap<String, String> _
+
   private File _gtfsPath;
 
   private boolean _gtfsTripMatching;
@@ -177,6 +179,13 @@ public class NextBusToGtfsService {
     }
   }
 
+  public String startTimeForTrip(String tripId) {
+    if (tripId == null)
+      return null;
+    
+    
+  }
+
   /****
    * Private Methods
    ****/
@@ -220,7 +229,7 @@ public class NextBusToGtfsService {
     return status;
   }
 
-  private int positiveMod(int value, int modulo) {
+  private static final int positiveMod(int value, int modulo) {
     int m = value % modulo;
     if (m < 0) {
       m += modulo;
@@ -242,26 +251,27 @@ public class NextBusToGtfsService {
       StopTime firstStopTime = allStopTimes.get(0);
       int arrivalTime = firstStopTime.getArrivalTime();
       
-      int seconds = positiveMod(t, 60);
-      int hourAndMinutes = (t - seconds) / 60;
+      int seconds = positiveMod(arrivalTime, 60);
+      int hourAndMinutes = (arrivalTime - seconds) / 60;
       int minutes = positiveMod(hourAndMinutes, 60);
       int hours = (hourAndMinutes - minutes) / 60;
-      //
-      // DecimalFormat format = new DecimalFormat("00");
-      // StringBuilder b = new StringBuilder();
-      // b.append(format.format(hours));
-      // b.append(":");
-      // b.append(format.format(minutes));
-      // b.append(":");
-      // b.append(format.format(seconds));
-      // String firstStopTimeString = b.toString();
-      //
-      // // String firstStopTimeString = StopTimeFieldMappingFactory.getSecondsAsString(firstStopTime.getArrivalTime());
-      // prediction.setStartTime(firstStopTimeString);
+
+      DecimalFormat format = new DecimalFormat("00");
+      StringBuilder b = new StringBuilder();
+      b.append(format.format(hours));
+      b.append(":");
+      b.append(format.format(minutes));
+      b.append(":");
+      b.append(format.format(seconds));
+      String firstStopTimeString = b.toString();
+      
+      // String firstStopTimeString = StopTimeFieldMappingFactory.getSecondsAsString(firstStopTime.getArrivalTime());
+      prediction.setStartTime(firstStopTimeString);
 
 
       int effectiveTime = (int) ((prediction.getEpochTime() - status.getServiceDateValue()) / 1000);
       int[] stopTimeArray = index.getStopTimes();
+      
       int i = Arrays.binarySearch(stopTimeArray, effectiveTime);
       if (i < 0) {
         i = -(i + 1);
