@@ -220,7 +220,7 @@ public class NextBusToGtfsService {
     return status;
   }
 
-  private static final int positiveMod(int value, int modulo) {
+  private int positiveMod(int value, int modulo) {
     int m = value % modulo;
     if (m < 0) {
       m += modulo;
