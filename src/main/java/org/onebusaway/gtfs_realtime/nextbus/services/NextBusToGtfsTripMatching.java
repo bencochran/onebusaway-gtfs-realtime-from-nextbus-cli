@@ -440,6 +440,7 @@ public class NextBusToGtfsTripMatching {
     for (Map.Entry<FlatStopTime, Integer> entry : mapping.entrySet()) {
       FlatStopTime nbStopTime = entry.getKey();
       int index = entry.getValue();
+      _log.info("this index: "+index);
       StopTime gtfsStopTime = null;
       if (0 <= index && index < gtfsStopTimes.size()) {
         gtfsStopTime = gtfsStopTimes.get(index);
