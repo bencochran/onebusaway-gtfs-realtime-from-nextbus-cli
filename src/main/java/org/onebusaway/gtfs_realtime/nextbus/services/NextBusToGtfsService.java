@@ -241,22 +241,23 @@ public class NextBusToGtfsService {
       List<StopTime> allStopTimes = stopTimeIndices.getStopTimes();
       StopTime firstStopTime = allStopTimes.get(0);
       int arrivalTime = firstStopTime.getArrivalTime();
-      int seconds = positiveMod(t, 60);
-      int hourAndMinutes = (t - seconds) / 60;
-      int minutes = positiveMod(hourAndMinutes, 60);
-      int hours = (hourAndMinutes - minutes) / 60;
-
-      DecimalFormat format = new DecimalFormat("00");
-      StringBuilder b = new StringBuilder();
-      b.append(format.format(hours));
-      b.append(":");
-      b.append(format.format(minutes));
-      b.append(":");
-      b.append(format.format(seconds));
-      String firstStopTimeString = b.toString();
-
-      // String firstStopTimeString = StopTimeFieldMappingFactory.getSecondsAsString(firstStopTime.getArrivalTime());
-      prediction.setStartTime(firstStopTimeString);
+      
+      // int seconds = positiveMod(t, 60);
+      // int hourAndMinutes = (t - seconds) / 60;
+      // int minutes = positiveMod(hourAndMinutes, 60);
+      // int hours = (hourAndMinutes - minutes) / 60;
+      //
+      // DecimalFormat format = new DecimalFormat("00");
+      // StringBuilder b = new StringBuilder();
+      // b.append(format.format(hours));
+      // b.append(":");
+      // b.append(format.format(minutes));
+      // b.append(":");
+      // b.append(format.format(seconds));
+      // String firstStopTimeString = b.toString();
+      //
+      // // String firstStopTimeString = StopTimeFieldMappingFactory.getSecondsAsString(firstStopTime.getArrivalTime());
+      // prediction.setStartTime(firstStopTimeString);
 
 
       int effectiveTime = (int) ((prediction.getEpochTime() - status.getServiceDateValue()) / 1000);
