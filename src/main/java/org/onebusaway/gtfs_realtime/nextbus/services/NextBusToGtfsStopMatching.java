@@ -145,7 +145,7 @@ public class NextBusToGtfsStopMatching {
           }
           String stopId = gtfsStop.getId().getId();
           RouteDirectionStopKey key = new RouteDirectionStopKey(
-              nbRoute.getTag(), direction.getTag(), stop.getTag());
+              nbRoute.getTag(), direction.getName(), stop.getTag());
           stopIdMappings.put(key, stopId);
         }
       }
