@@ -242,10 +242,10 @@ public class NextBusToGtfsService {
       StopTime firstStopTime = allStopTimes.get(0);
       int arrivalTime = firstStopTime.getArrivalTime();
       
-      // int seconds = positiveMod(t, 60);
-      // int hourAndMinutes = (t - seconds) / 60;
-      // int minutes = positiveMod(hourAndMinutes, 60);
-      // int hours = (hourAndMinutes - minutes) / 60;
+      int seconds = positiveMod(t, 60);
+      int hourAndMinutes = (t - seconds) / 60;
+      int minutes = positiveMod(hourAndMinutes, 60);
+      int hours = (hourAndMinutes - minutes) / 60;
       //
       // DecimalFormat format = new DecimalFormat("00");
       // StringBuilder b = new StringBuilder();
