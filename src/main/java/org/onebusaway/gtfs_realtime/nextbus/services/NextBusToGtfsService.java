@@ -252,12 +252,12 @@ public class NextBusToGtfsService {
 
       DecimalFormat format = new DecimalFormat("00");
       StringBuilder b = new StringBuilder();
-      // b.append(format.format(hours));
-      // b.append(":");
-      // b.append(format.format(minutes));
-      // b.append(":");
-      // b.append(format.format(seconds));
-      // String firstStopTimeString = b.toString();
+      b.append(format.format(hours));
+      b.append(":");
+      b.append(format.format(minutes));
+      b.append(":");
+      b.append(format.format(seconds));
+      String firstStopTimeString = b.toString();
       
       // String firstStopTimeString = StopTimeFieldMappingFactory.getSecondsAsString(firstStopTime.getArrivalTime());
       // prediction.setStartTime(firstStopTimeString);
