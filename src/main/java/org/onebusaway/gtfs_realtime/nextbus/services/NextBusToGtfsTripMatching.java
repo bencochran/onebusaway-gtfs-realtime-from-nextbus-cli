@@ -96,7 +96,7 @@ public class NextBusToGtfsTripMatching {
       Route gtfsRoute = entry.getValue();
       
       for (NBDirection dir : nbRoute.getDirections()) {
-        _log.info("%%% " + dir.getTag() + " : " + dir.getName() );
+        // _log.info("%%% " + dir.getTag() + " : " + dir.getName() + " : " + dir.getTitle());
       }
       
       List<NBRoute> schedules = getSchedulesForRoute(nbRoute);
