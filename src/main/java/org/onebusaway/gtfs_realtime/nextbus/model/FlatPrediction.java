@@ -92,7 +92,7 @@ public class FlatPrediction implements Comparable<FlatPrediction> {
     return startTime;
   }
 
-  public void getStartTime(String startTime) {
+  public void setStartTime(String startTime) {
     this.startTime = startTime;
   }
 
