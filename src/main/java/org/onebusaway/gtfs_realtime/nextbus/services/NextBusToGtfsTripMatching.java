@@ -187,6 +187,28 @@ public class NextBusToGtfsTripMatching {
     }
 
     if (m.getMinValue() > 2 * 60) {
+      // StringBuilder b = new StringBuilder();
+      // for (FlatStopTime stopTime : nextBusTrip) {
+      //   b.append("\n  ");
+      //   b.append(stopTime.getRouteTag());
+      //   b.append(" ");
+      //   b.append(stopTime.getScheduleClass());
+      //   b.append(" ");
+      //   b.append(stopTime.getServiceClass());
+      //   b.append(" ");
+      //   b.append(stopTime.getDirectionTag());
+      //   b.append(" ");
+      //   b.append(stopTime.getBlockTag());
+      //   b.append(" ");
+      //   b.append(stopTime.getStopTag());
+      //   b.append(" ");
+      //   b.append(stopTime.getEpochTimeAsString());
+      //
+      // }
+      // _log.warn("no good match found for trip: ("+m.getMinValue()+")" + b.toString());
+    } else {
+      List<StopTime> bestStopTimes = m.getMinElement();
+      bestStopTimesForBlock.addAll(bestStopTimes);
       StringBuilder b = new StringBuilder();
       for (FlatStopTime stopTime : nextBusTrip) {
         b.append("\n  ");
@@ -205,10 +227,7 @@ public class NextBusToGtfsTripMatching {
         b.append(stopTime.getEpochTimeAsString());
 
       }
-      _log.warn("no good match found for trip: ("+m.getMinValue()+")" + b.toString());
-    } else {
-      List<StopTime> bestStopTimes = m.getMinElement();
-      bestStopTimesForBlock.addAll(bestStopTimes);
+      _log.warn("good match found for trip: ("+m.getMinValue()+")" + b.toString());
 
     }
     return m.getMinValue();
