@@ -457,8 +457,6 @@ public class NextBusToGtfsTripMatching {
       }
     }
     
-    _log.info("got this many: "+mapping.entrySet().count());
-    
 
     if (allMisses)
       return 4 * 60 * 60;
