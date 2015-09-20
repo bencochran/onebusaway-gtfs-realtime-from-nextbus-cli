@@ -180,13 +180,6 @@ public class NextBusToGtfsService {
     }
   }
 
-  public String startTimeForTrip(String tripId) {
-    if (tripId == null)
-      return null;
-    
-    
-  }
-
   /****
    * Private Methods
    ****/
